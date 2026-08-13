@@ -1,0 +1,509 @@
+<title>Berlue — Support de pitch</title>
+<style>
+  :root {
+    --bg: hsl(222 32% 96%);
+    --surface: #ffffff;
+    --ink: hsl(222 25% 16%);
+    --muted: hsl(222 14% 42%);
+    --border: hsl(222 20% 84%);
+    --shadow-color: hsl(222 40% 18% / .28);
+
+    /* palette de référence (accent + 4 secondaires) */
+    --accent: #345AB2;
+    --c1: #009DA8;
+    --c2: #2A9F56;
+    --c3: #F86F32;
+    --c4: #FB9E4E;
+
+    /* une couleur par rôle, pas un accent unique partout */
+    --h1: var(--accent);
+    --h2: var(--c1);
+    --etiquette: var(--accent);
+    --etiquette-soft: hsl(222 55% 93%);
+    --textes: var(--c1);
+    --tag-tech-bg: hsl(222 45% 91%);
+
+    --font-heading: "Palatino Linotype", Palatino, "Book Antiqua", serif;
+    --font-body: Georgia, "Iowan Old Style", Charter, serif;
+
+    /* échelle de titres du système (tailles manuelles fixes, pas de em arbitraire) */
+    --size-base: 15px;
+    --size-h1: 26px;
+    --size-h2: 24px;
+  }
+
+  * { box-sizing: border-box; }
+  html { font-size: var(--size-base); }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--font-body); line-height: 1.6;
+  }
+  .page { max-width: 980px; margin: 0 auto; padding: 1.6rem clamp(1.1rem, 4vw, 2.5rem) 3rem; }
+
+  header.hero { border-bottom: 1px solid var(--border); padding-bottom: 0.9rem; margin-bottom: 1.3rem; }
+  header.hero h1 {
+    font-family: var(--font-heading); color: var(--h1);
+    font-size: var(--size-h1);
+    line-height: 1.15; margin: 0; font-weight: 700;
+  }
+
+  h2.section-title {
+    font-family: var(--font-heading); color: var(--h2);
+    font-size: var(--size-h2);
+    font-weight: 700; margin: 1.9rem 0 0.7rem;
+    display: flex; align-items: baseline; gap: 0.55rem;
+  }
+  h2.section-title .num {
+    font-family: var(--font-heading); font-size: 0.6em; font-weight: 700;
+    color: var(--etiquette); background: var(--etiquette-soft);
+    border-radius: 0; padding: 0.15em 0.5em;
+  }
+
+  p, li { line-height: 1.6; margin: 0 0 0.75rem; font-size: 1rem; }
+  .pitch-block ul { margin: 0 0 0.9rem; padding-left: 1.3rem; }
+  .pitch-block ul ul { margin: 0.3rem 0 0.3rem; }
+  .pitch-block li { margin-bottom: 0.3rem; }
+  .pitch-block b { color: var(--textes); }
+
+  a { color: var(--textes); }
+
+  figure { margin: 1rem 0 0; }
+  figure svg { max-width: 100%; height: auto; display: block; color: var(--ink); }
+  figure svg .muted { color: var(--muted); }
+  figcaption {
+    font-size: 1rem; color: var(--muted); margin-top: 0.7rem;
+    padding-top: 0.6rem; border-top: 1px solid var(--border); line-height: 1.55;
+  }
+  figcaption ul { margin: 0.3rem 0 0; padding-left: 1.3rem; }
+  figcaption li { margin-bottom: 0.2rem; }
+
+  /* présentation page par page : chaque section = un écran, avec navigation par ancre,
+     et un grand blanc entre sections pour qu'on ne voie jamais deux morceaux de page à la fois */
+  section { min-height: 92vh; display: flex; flex-direction: column; scroll-margin-top: 1.2rem; margin-bottom: 8rem; }
+  section.pitch-block { min-height: 78vh; }
+  section:last-of-type { margin-bottom: 0; }
+
+  .pager {
+    padding-top: 1.2rem; margin-bottom: 1.6rem;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .pager a {
+    display: inline-flex; align-items: center; gap: 0.4em;
+    font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem;
+    color: var(--textes); text-decoration: none; cursor: pointer;
+    padding: 0.45em 1em; border: 1px solid var(--border); border-radius: 0;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    transition: filter .15s ease, transform .15s ease;
+  }
+  .pager a:hover { filter: brightness(.92); transform: translateY(-1px); }
+  .pager .spacer { visibility: hidden; }
+  @media (prefers-reduced-motion: reduce) { .pager a { transition: none; } }
+
+  .diagram-wrap {
+    background: var(--surface); border-radius: 0;
+    padding: 1.1rem clamp(0.6rem, 2vw, 1.4rem);
+    overflow-x: auto;
+    box-shadow: 0 6px 18px var(--shadow-color);
+  }
+
+  @media print {
+    @page { size: A4 landscape; margin: 10mm; }
+    body, .surface { background: #FFFFFF; }
+    .diagram-wrap { box-shadow: none; border: 1px solid var(--border); }
+    section { min-height: 0; page-break-before: always; page-break-inside: avoid; }
+    section:first-of-type { page-break-before: avoid; }
+    .pager { display: none; }
+  }
+</style>
+
+<div class="page">
+
+  <header class="hero">
+    <h1>Berlue — vérificateur d'hallucinations LLM</h1>
+  </header>
+
+  <section class="pitch-block" id="s01">
+    <nav class="pager">
+      <span class="spacer"><a href="#s01">← Précédent</a></span>
+      <a href="#s02">Suivant →</a>
+    </nav>
+    <h2 class="section-title"><span class="num">01</span> Le concept</h2>
+    <p><b>Le problème :</b> un LLM répond toujours avec la même assurance, qu'il dise vrai ou qu'il invente. <br />
+    L'utilisateur n'a aucun moyen simple de savoir quelle partie d'une réponse est fiable.</p>
+
+    <p><b>La démo partie 1 :</b> une question piège (type idée reçue), la réponse du LLM affichée en direct, puis surlignée par Berlue — l'utilisateur voit l'endroit exact où le modèle « a la berlue ».</p>
+
+    <p><b>Ce que fait Berlue :</b> Verifie que ce repond un llm n'est pas une hallucination.</p>
+    <ul>
+      <li>on pose une question à un LLM local.</li>
+      <li>Berlue découpe la réponse en affirmations.</li>
+      <li>Vérifie chacune par deux mécanismes complémentaires :
+        <ul>
+          <li>une recherche de preuves externes (RAG inversé sur un corpus factuel) cree grace aux données FEVER</li>
+          <li>un test d'auto-cohérence (le LLM se contredit-il si on le fait répondre plusieurs fois ?)</li>
+        </ul>
+      </li>
+      <li>recupere les resultats pour chaque affirmation et categorise.</li>
+      <li>surligne la réponse en vert/orange/rouge avec un score de confiance par affirmation et la preuve citée.</li>
+    </ul>
+
+    <p><b>La démo partie 2 :</b> Est ce que Berlue est efficasse ? Nous presentons alors nos resultats statistiques</p>
+
+    <p><b>Comment verifier notre outils :</b></p>
+    <ul>
+      <li>Utilisation de deux dataset de questions difficiles pour IA.</li>
+      <li>On lance berlu pour verifie pour chaque question reponse si berlue detecte bien les fausses reponses du modele.</li>
+      <li>On compare avec un classifier statistique (baseline).</li>
+      <li>On determine la pertinence de notre outil.</li>
+    </ul>
+
+  </section>
+
+  <section id="s02">
+    <nav class="pager">
+      <a href="#s01">← Précédent</a>
+      <a href="#s03">Suivant →</a>
+    </nav>
+    <h2 class="section-title"><span class="num">02</span> Scénario de démo — diagramme de séquence</h2>
+    <div class="diagram-wrap">
+      <figure>
+        <svg viewBox="0 0 920 664" role="img" aria-label="Séquence : l'utilisateur pose une question, l'interface obtient une réponse et ses affirmations d'Ollama, vérifie chaque affirmation auprès du module RAG en boucle, lance en parallèle un test d'auto-cohérence SelfCheckGPT qui répète K fois — en boucle, un appel Ollama à la fois — la génération d'un échantillon à température élevée, puis renvoie à l'utilisateur la réponse surlignée avec un score de confiance.">
+          <defs>
+            <marker id="seqArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+
+          <!-- lane headers -->
+          <g font-size="12.5" text-anchor="middle">
+            <rect x="12" y="14" width="116" height="38" rx="0" fill="none" stroke="currentColor"/>
+            <text x="70" y="37" font-weight="700">Utilisateur</text>
+
+            <rect x="190" y="14" width="150" height="38" rx="0" fill="none" stroke="currentColor"/>
+            <text x="265" y="37" font-weight="700">Interface Berlue</text>
+
+            <rect x="392" y="14" width="136" height="38" rx="0" fill="none" stroke="currentColor"/>
+            <text x="460" y="37" font-weight="700">Ollama</text>
+
+            <rect x="588" y="14" width="124" height="38" rx="0" fill="none" stroke="currentColor"/>
+            <text x="650" y="37" font-weight="700">Module RAG</text>
+
+            <rect x="766" y="14" width="148" height="38" rx="0" fill="none" stroke="currentColor"/>
+            <text x="840" y="37" font-weight="700">SelfCheckGPT</text>
+          </g>
+
+          <!-- lifelines -->
+          <g stroke="currentColor" stroke-opacity="0.35" stroke-dasharray="3 4">
+            <line x1="70" y1="56" x2="70" y2="636"/>
+            <line x1="265" y1="56" x2="265" y2="636"/>
+            <line x1="460" y1="56" x2="460" y2="636"/>
+            <line x1="650" y1="56" x2="650" y2="636"/>
+            <line x1="840" y1="56" x2="840" y2="636"/>
+          </g>
+
+          <!-- step 1 -->
+          <line x1="70" y1="90" x2="259" y2="90" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="167" y="82" font-size="12" text-anchor="middle">1 · pose une question</text>
+
+          <!-- step 2 -->
+          <line x1="271" y1="140" x2="454" y2="140" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="362" y="132" font-size="12" text-anchor="middle">2 · pose la question</text>
+
+          <!-- step 3 -->
+          <line x1="454" y1="190" x2="271" y2="190" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="362" y="182" font-size="12" text-anchor="middle">3 · réponse + affirmations extraites</text>
+
+          <!-- frame: loop -->
+          <rect x="235" y="216" width="445" height="112" rx="0" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-dasharray="5 4"/>
+          <path d="M235,216 h190 v14 l-8,8 h-182 z" fill="var(--tag-tech-bg)" stroke="currentColor" stroke-opacity="0.55"/>
+          <text x="243" y="230" font-size="10.5" font-style="italic">pour chaque affirmation</text>
+
+          <!-- step 4 -->
+          <line x1="271" y1="256" x2="644" y2="256" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="457" y="250" font-size="12" text-anchor="middle">4 · cherche une preuve</text>
+
+          <!-- step 5 -->
+          <line x1="644" y1="304" x2="271" y2="304" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="457" y="298" font-size="12" text-anchor="middle">5 · verdict + citation</text>
+
+          <!-- step 6 -->
+          <line x1="271" y1="414" x2="454" y2="414" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="362" y="406" font-size="12" text-anchor="middle">6 · repose la question K fois avec des températures élevées</text>
+
+          <!-- step 7 -->
+          <line x1="466" y1="454" x2="834" y2="454" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="650" y="446" font-size="12" text-anchor="middle">7 · reponses à comparer</text>
+
+          <!-- step 8 -->
+          <line x1="834" y1="506" x2="271" y2="506" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="552" y="500" font-size="12" text-anchor="middle">8 · score de divergence des reponses</text>
+
+          <!-- fusion note (self-note, centrée sur Interface Berlue) -->
+          <rect x="115" y="542" width="300" height="48" rx="0" fill="none" stroke="currentColor" stroke-dasharray="3 3"/>
+          <text x="265" y="562" font-size="11" text-anchor="middle" font-style="italic">classifie grace au verdict RAG + score SelfCheckGPT</text>
+          <text x="265" y="578" font-size="11" text-anchor="middle" font-style="italic">→ score de confiance</text>
+
+          <!-- step 9 -->
+          <line x1="265" y1="618" x2="76" y2="618" stroke="currentColor" marker-end="url(#seqArrow)"/>
+          <text x="167" y="612" font-size="12" text-anchor="middle">9 · réponse surlignée + score + citation</text>
+        </svg>
+      </figure>
+      <figcaption><b>Temp</b>: La température contrôle le degré d'aléatoire du mot suivant généré par le LLM.
+        <ul>
+          <li>Temp = 0, le modèle prend quasi toujours le mot le plus probable → réponse stable</li>
+          <li>Temp > 0, mots moins probables ont plus de chances d'être tirés → réponse différente à chaque tirage.</li>
+        </ul>
+      </figcaption>
+    </div>
+
+  </section>
+
+  <section id="s03">
+    <nav class="pager">
+      <a href="#s02">← Précédent</a>
+      <a href="#s04">Suivant →</a>
+    </nav>
+    <h2 class="section-title"><span class="num">03</span> Composants de la démo — schéma d'architecture</h2>
+    <div class="diagram-wrap">
+      <figure>
+        <svg viewBox="0 0 930 560" role="img" aria-label="Architecture de la démo : l'utilisateur échange question et résultat avec l'interface web ; à l'intérieur du système Berlue, l'interface passe la question au LLM (Ollama ou transformers), qui la transmet à l'extracteur d'affirmations puis, en parallèle, au module SelfCheckGPT ; l'extracteur interroge le module RAG et son index vectoriel construit sur le corpus FEVER ; RAG et SelfCheckGPT envoient chacun leur verdict à la fusion de score, qui renvoie le résultat à l'interface web. Aucun composant externe au système hormis le corpus FEVER indexé par RAG.">
+          <defs>
+            <marker id="archArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+
+          <!-- Utilisateur (acteur) -->
+          <g>
+            <circle cx="140" cy="22" r="9" fill="none" stroke="currentColor"/>
+            <line x1="140" y1="31" x2="140" y2="55" stroke="currentColor"/>
+            <line x1="124" y1="40" x2="156" y2="40" stroke="currentColor"/>
+            <line x1="140" y1="55" x2="126" y2="76" stroke="currentColor"/>
+            <line x1="140" y1="55" x2="154" y2="76" stroke="currentColor"/>
+            <text x="140" y="92" font-size="12" text-anchor="middle">Utilisateur</text>
+          </g>
+          <line x1="140" y1="100" x2="140" y2="176" stroke="currentColor" marker-end="url(#archArrow)" marker-start="url(#archArrow)"/>
+
+          <!-- Système Berlue -->
+          <rect x="20" y="130" width="880" height="410" rx="0" fill="none" stroke="currentColor"/>
+          <text x="460" y="158" font-size="18" text-anchor="middle" font-weight="700">Berlue</text>
+
+          <!-- Interface Web -->
+          <rect x="50" y="176" width="170" height="54" rx="0" fill="none" stroke="currentColor"/>
+          <text x="135" y="207" font-size="12.5" text-anchor="middle" font-weight="700">Interface Web</text>
+
+          <!-- LLM -->
+          <rect x="280" y="176" width="170" height="54" rx="0" fill="none" stroke="currentColor"/>
+          <text x="365" y="200" font-size="12.5" text-anchor="middle" font-weight="700">LLM</text>
+          <text x="365" y="217" font-size="10" text-anchor="middle" fill="var(--textes)">ollama ou transformers</text>
+
+          <!-- Extracteur d'affirmations -->
+          <rect x="510" y="176" width="210" height="54" rx="0" fill="none" stroke="currentColor"/>
+          <text x="615" y="200" font-size="12.5" text-anchor="middle" font-weight="700">Extracteur</text>
+          <text x="615" y="216" font-size="12.5" text-anchor="middle" font-weight="700">d'affirmations</text>
+
+          <!-- SelfCheckGPT -->
+          <rect x="280" y="276" width="190" height="54" rx="0" fill="none" stroke="currentColor"/>
+          <text x="375" y="300" font-size="12.5" text-anchor="middle" font-weight="700">SelfCheckGPT</text>
+          <text x="375" y="317" font-size="10" text-anchor="middle" fill="var(--textes)">module selfcheckgpt</text>
+
+          <!-- RAG -->
+          <rect x="740" y="176" width="140" height="180" rx="0" fill="none" stroke="currentColor"/>
+          <text x="810" y="200" font-size="12.5" text-anchor="middle" font-weight="700">RAG</text>
+          <text x="810" y="217" font-size="12.5" text-anchor="middle" font-weight="700">Index vectoriel</text>
+          <text x="810" y="237" font-size="10" text-anchor="middle" fill="var(--textes)">FAISS/Chroma lib</text>
+          <ellipse cx="810" cy="270" rx="42" ry="9" fill="none" stroke="var(--c3)"/>
+          <path d="M768,270 v50 a42,9 0 0 0 84,0 v-50" fill="none" stroke="var(--c3)"/>
+          <text x="810" y="300" font-size="11" text-anchor="middle" font-weight="700" fill="var(--c3)">FEVER</text>
+
+          <!-- Fusion Score -->
+          <rect x="380" y="440" width="200" height="54" rx="0" fill="none" stroke="currentColor"/>
+          <text x="480" y="472" font-size="12.5" text-anchor="middle" font-weight="700">Fusion Score</text>
+
+          <!-- Interface -> LLM -->
+          <line x1="220" y1="203" x2="280" y2="203" stroke="currentColor" marker-end="url(#archArrow)"/>
+          <!-- LLM -> Extracteur -->
+          <line x1="450" y1="203" x2="510" y2="203" stroke="currentColor" marker-end="url(#archArrow)"/>
+          <!-- Extracteur -> RAG -->
+          <polyline points="615,230 615,250 740,250" fill="none" stroke="currentColor" marker-end="url(#archArrow)"/>
+          <!-- LLM -> SelfCheckGPT -->
+          <line x1="365" y1="230" x2="365" y2="276" stroke="currentColor" marker-end="url(#archArrow)"/>
+          <!-- SelfCheckGPT -> Fusion -->
+          <polyline points="375,330 375,410 430,410 430,440" fill="none" stroke="currentColor" marker-end="url(#archArrow)"/>
+          <!-- RAG -> Fusion -->
+          <polyline points="810,356 810,410 530,410 530,440" fill="none" stroke="currentColor" marker-end="url(#archArrow)"/>
+          <!-- Fusion -> Interface (retour) -->
+          <polyline points="480,494 480,515 60,515 60,230" fill="none" stroke="currentColor" marker-end="url(#archArrow)"/>
+        </svg>
+      </figure>
+      <figcaption><a href="https://huggingface.co/datasets/fever/fever" target="_blank" rel="noopener" style="color: var(--c3);"><b>FEVER</b></a> : ~145k affirmations Wikipédia étiquetées soutenue / réfutée / pas assez d'info, chacune avec sa preuve — le corpus qu'on indexe pour le RAG inversé.</figcaption>
+    </div>
+
+  </section>
+
+  <section id="s04">
+    <nav class="pager">
+      <a href="#s03">← Précédent</a>
+      <a href="#s05">Suivant →</a>
+    </nav>
+    <h2 class="section-title"><span class="num">04</span> Preuve de pertinence — séquence de l'évaluation offline</h2>
+    <div class="diagram-wrap">
+      <figure>
+        <svg viewBox="0 0 1000 560" role="img" aria-label="Séquence d'évaluation offline : un script d'évaluation charge des exemples labellisés depuis HaluEval et TruthfulQA, puis pour chaque exemple interroge à la fois le pipeline Berlue complet et le classifieur NLI léger de référence, compare les deux verdicts au label vérité-terrain, et agrège le tout en un rapport de métriques comparatif utilisé dans les slides de la presentation finale.">
+          <defs>
+            <marker id="seqArrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+
+          <!-- lane headers -->
+          <g font-size="12.5" text-anchor="middle">
+            <rect x="10" y="14" width="150" height="38" rx="0" fill="none" stroke="currentColor"/>
+            <text x="85" y="37" font-weight="700">Script d'évaluation</text>
+
+            <rect x="190" y="10" width="180" height="46" rx="0" fill="none" stroke="currentColor"/>
+            <text x="280" y="29" font-weight="700">Jeux de données</text>
+            <text x="280" y="45" class="muted" fill="currentColor" opacity="0.75">(HaluEval / TruthfulQA)</text>
+
+            <rect x="400" y="10" width="200" height="46" rx="0" fill="none" stroke="currentColor" stroke-width="1.6"/>
+            <text x="500" y="29" font-weight="700">Pipeline Berlue</text>
+            <text x="500" y="45" class="muted" fill="currentColor" opacity="0.75">(Ollama + RAG + SelfCheck)</text>
+
+            <rect x="630" y="10" width="170" height="46" rx="0" fill="none" stroke="currentColor" stroke-dasharray="3 3"/>
+            <text x="715" y="29" font-weight="700">Classifieur NLI</text>
+            <text x="715" y="45" class="muted" fill="currentColor" opacity="0.75">(baseline légère)</text>
+
+            <rect x="830" y="14" width="160" height="38" rx="0" fill="none" stroke="currentColor"/>
+            <text x="910" y="37" font-weight="700">Rapport de métriques</text>
+          </g>
+
+          <!-- lifelines -->
+          <g stroke="currentColor" stroke-opacity="0.35" stroke-dasharray="3 4">
+            <line x1="85" y1="60" x2="85" y2="520"/>
+            <line x1="280" y1="60" x2="280" y2="520"/>
+            <line x1="500" y1="60" x2="500" y2="520"/>
+            <line x1="715" y1="60" x2="715" y2="520"/>
+            <line x1="910" y1="60" x2="910" y2="520"/>
+          </g>
+
+          <!-- step 1 -->
+          <line x1="91" y1="90" x2="274" y2="90" stroke="currentColor" marker-end="url(#seqArrow2)"/>
+          <text x="182" y="82" font-size="12" text-anchor="middle">1 · charge N exemples labellisés</text>
+
+          <!-- step 2 -->
+          <line x1="274" y1="134" x2="91" y2="134" stroke="currentColor" marker-end="url(#seqArrow2)"/>
+          <text x="182" y="126" font-size="12" text-anchor="middle">2 · question + réponse + label vérité-terrain</text>
+
+          <!-- frame: loop -->
+          <rect x="55" y="158" width="690" height="246" rx="0" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-dasharray="5 4"/>
+          <path d="M55,158 h300 v14 l-8,8 h-292 z" fill="var(--tag-tech-bg)" stroke="currentColor" stroke-opacity="0.55"/>
+          <text x="63" y="172" font-size="10.5" font-style="italic">pour chaque question + réponses + label</text>
+
+          <!-- step 3 -->
+          <line x1="91" y1="198" x2="494" y2="198" stroke="currentColor" marker-end="url(#seqArrow2)"/>
+          <text x="292" y="190" font-size="12" text-anchor="middle">3 · vérifie (pipeline complet)</text>
+
+          <!-- step 4 -->
+          <line x1="494" y1="242" x2="91" y2="242" stroke="currentColor" marker-end="url(#seqArrow2)"/>
+          <text x="292" y="234" font-size="12" text-anchor="middle">4 · verdict + score de confiance</text>
+
+          <!-- step 5 -->
+          <line x1="91" y1="286" x2="709" y2="286" stroke="currentColor" marker-end="url(#seqArrow2)"/>
+          <text x="400" y="278" font-size="12" text-anchor="middle">5 · même exemple (baseline)</text>
+
+          <!-- step 6 -->
+          <line x1="709" y1="330" x2="91" y2="330" stroke="currentColor" marker-end="url(#seqArrow2)"/>
+          <text x="400" y="322" font-size="12" text-anchor="middle">6 · verdict basique</text>
+
+          <!-- step 7 : self-note -->
+          <rect x="110" y="344" width="330" height="48" rx="0" fill="none" stroke="currentColor" stroke-dasharray="3 3"/>
+          <text x="275" y="362" font-size="11" text-anchor="middle" font-style="italic">7 · compare Berlue vs baseline aux</text>
+          <text x="275" y="378" font-size="11" text-anchor="middle" font-style="italic">labels vérité-terrain, enregistre le résultat</text>
+          <line x1="110" y1="368" x2="91" y2="368" stroke="currentColor" stroke-dasharray="3 3"/>
+
+          <!-- step 8 -->
+          <line x1="91" y1="436" x2="904" y2="436" stroke="currentColor" marker-end="url(#seqArrow2)"/>
+          <text x="497" y="428" font-size="12" text-anchor="middle">8 · agrège précision / rappel / F1 par pipeline</text>
+
+          <!-- step 9 -->
+          <line x1="904" y1="480" x2="91" y2="480" stroke="currentColor" marker-end="url(#seqArrow2)"/>
+          <text x="497" y="472" font-size="12" text-anchor="middle">9 · chiffres comparatifs (pour les slides de la présentation finale)</text>
+        </svg>
+      </figure>
+    </div>
+
+  </section>
+
+  <section id="s05">
+    <nav class="pager">
+      <a href="#s04">← Précédent</a>
+      <span class="spacer"><a href="#s05">Suivant →</a></span>
+    </nav>
+    <h2 class="section-title"><span class="num">05</span> Composants de l'évaluation offline — schéma d'architecture</h2>
+    <div class="diagram-wrap">
+      <figure>
+        <svg viewBox="0 0 900 380" role="img" aria-label="Architecture de l'évaluation offline : un script d'évaluation charge des exemples labellisés depuis les jeux de données externes HaluEval et TruthfulQA, interroge le pipeline Berlue (simplifié en boîte noire) et le classifieur NLI léger de référence, puis agrège les deux verdicts en un rapport de métriques.">
+          <defs>
+            <marker id="archArrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+
+          <!-- Script d'évaluation -->
+          <rect x="350" y="16" width="220" height="44" rx="0" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <text x="460" y="43" font-size="13" text-anchor="middle" font-weight="700">Script d'évaluation</text>
+
+          <!-- Jeux de données externes group -->
+          <rect x="30" y="110" width="300" height="100" rx="0" fill="none" stroke="currentColor" stroke-opacity="0.55" stroke-dasharray="5 4"/>
+
+          <ellipse cx="112" cy="150" rx="48" ry="8" fill="none" stroke="var(--c3)"/>
+          <path d="M64,150 v45 a48,8 0 0 0 96,0 v-45" fill="none" stroke="var(--c3)"/>
+          <text x="112" y="180" font-size="11" text-anchor="middle" font-weight="700" fill="var(--c3)">HaluEval</text>
+
+          <ellipse cx="252" cy="150" rx="48" ry="8" fill="none" stroke="var(--c3)"/>
+          <path d="M204,150 v45 a48,8 0 0 0 96,0 v-45" fill="none" stroke="var(--c3)"/>
+          <text x="252" y="180" font-size="11" text-anchor="middle" font-weight="700" fill="var(--c3)">TruthfulQA</text>
+
+          <!-- Pipeline Berlue simplifié -->
+          <rect x="360" y="140" width="200" height="54" rx="0" fill="none" stroke="currentColor"/>
+          <text x="460" y="163" font-size="12.5" text-anchor="middle" font-weight="700">Pipeline Berlue</text>
+          <text x="460" y="179" font-size="10.5" text-anchor="middle" class="muted" fill="currentColor" opacity="0.75">détail en §03</text>
+
+          <!-- Classifieur NLI -->
+          <rect x="610" y="140" width="250" height="54" rx="0" fill="none" stroke="currentColor" stroke-dasharray="3 3"/>
+          <text x="735" y="163" font-size="12.5" text-anchor="middle" font-weight="700">Classifieur NLI</text>
+          <text x="735" y="179" font-size="10.5" text-anchor="middle" class="muted" fill="currentColor" opacity="0.75">TF-IDF + LogReg</text>
+
+          <!-- Rapport de métriques -->
+          <rect x="350" y="300" width="220" height="48" rx="0" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          <text x="460" y="329" font-size="13" text-anchor="middle" font-weight="700" fill="var(--accent)">Rapport de métriques</text>
+
+          <!-- Script -> Jeux de données externes -->
+          <polyline points="400,60 400,85 180,85 180,110" fill="none" stroke="currentColor" marker-end="url(#archArrow2)" marker-start="url(#archArrow2)"/>
+          <text x="330" y="79" font-size="10.5" text-anchor="middle">charge / exemples labellisés</text>
+
+          <!-- Script -> Pipeline Berlue -->
+          <line x1="460" y1="60" x2="460" y2="138" stroke="currentColor" marker-end="url(#archArrow2)" marker-start="url(#archArrow2)"/>
+          <text x="460" y="128" font-size="10.5" text-anchor="middle">vérifie / verdict + score</text>
+
+          <!-- Script -> Classifieur -->
+          <polyline points="520,60 520,100 735,100 735,138" fill="none" stroke="currentColor" marker-end="url(#archArrow2)" marker-start="url(#archArrow2)"/>
+          <text x="700" y="94" font-size="10.5" text-anchor="middle">vérifie / verdict basique</text>
+
+          <!-- Script -> Rapport de métriques (right-edge route) -->
+          <polyline points="570,38 870,38 870,324 570,324" fill="none" stroke="var(--accent)" marker-end="url(#archArrow2)"/>
+          <text x="740" y="32" font-size="10.5" text-anchor="middle" fill="var(--accent)">agrège précision / rappel / F1</text>
+        </svg>
+      </figure>
+      <figcaption>
+        <ul>
+          <li><a href="https://github.com/RUCAIBox/HaluEval" target="_blank" rel="noopener" style="color: var(--c3);"><b>HaluEval</b></a> : ~35k réponses QA/dialogue/résumé, appariées correcte vs hallucinée.</li>
+          <li><a href="https://huggingface.co/datasets/truthfulqa/truthful_qa" target="_blank" rel="noopener" style="color: var(--c3);"><b>TruthfulQA</b></a> : 817 questions sur 38 catégories d'idées reçues, teste si le modèle répète l'erreur commune plutôt que la vérité.</li>
+        </ul>
+      </figcaption>
+    </div>
+
+  </section>
+
+</div>
