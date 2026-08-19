@@ -1,4 +1,4 @@
-<title>Berlue — Support de pitch</title>
+<title>Berlue — Pitch illustré</title>
 <style>
   :root {
     --bg: hsl(222 32% 96%);
@@ -74,6 +74,7 @@
   figure { margin: 1rem 0 0; }
   figure svg { max-width: 100%; height: auto; display: block; color: var(--ink); }
   figure svg .muted { color: var(--muted); }
+  figure img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
   figcaption {
     font-size: 1rem; color: var(--muted); margin-top: 0.7rem;
     padding-top: 0.6rem; border-top: 1px solid var(--border); line-height: 1.55;
@@ -85,6 +86,7 @@
      et un grand blanc entre sections pour qu'on ne voie jamais deux morceaux de page à la fois */
   section { min-height: 92vh; display: flex; flex-direction: column; scroll-margin-top: 1.2rem; margin-bottom: 8rem; }
   section.pitch-block { min-height: 78vh; }
+  section.img-slide { min-height: 92vh; justify-content: center; }
   section:last-of-type { margin-bottom: 0; }
 
   .pager {
@@ -125,15 +127,73 @@
 
   <header class="hero">
     <h1>Berlue — vérificateur d'hallucinations LLM</h1>
-    <p class="subtitle">Voir aussi la <a href="pitch-berlue-illustre.html">version illustrée du pitch</a>.</p>
+    <p class="subtitle">Version illustrée du pitch — voir aussi la <a href="pitch-berlue.html">version texte/diagrammes</a>.</p>
   </header>
 
-  <section class="pitch-block" id="s01">
+  <!-- ===================== SLIDES ILLUSTRÉES (pitch2/images) ===================== -->
+
+  <section class="img-slide" id="s01">
     <nav class="pager">
       <span class="spacer"><a href="#s01">← Précédent</a></span>
       <a href="#s02">Suivant →</a>
     </nav>
-    <h2 class="section-title"><span class="num">01</span> Le concept</h2>
+    <h2 class="section-title"><span class="num">01</span> Berlue en action</h2>
+    <div class="diagram-wrap">
+      <figure>
+        <img src="images/1.jpeg" alt="Le robot Berlue, en pleine démo, pointe vers deux panneaux holographiques affichant l'affirmation « Le ciel est vert » — l'un marqué d'une croix rouge « Faux ! », l'autre repris tel quel — pendant qu'un utilisateur travaille en arrière-plan sur des écrans de code.">
+      </figure>
+      <figcaption>Berlue vérifie en direct ce qu'affirme un LLM, et signale précisément ce qui est faux.</figcaption>
+    </div>
+  </section>
+
+  <section class="img-slide" id="s02">
+    <nav class="pager">
+      <a href="#s01">← Précédent</a>
+      <a href="#s03">Suivant →</a>
+    </nav>
+    <h2 class="section-title"><span class="num">02</span> Le processus Berlue en 4 étapes</h2>
+    <div class="diagram-wrap">
+      <figure>
+        <img src="images/2.jpeg" alt="Étape 1 : détection d'assertion — le robot analyse la réponse du LLM pour identifier les affirmations factuelles. Étape 2 : recherche de preuves — Berlue vérifie chaque affirmation via RAG sur le corpus FEVER et teste l'auto-cohérence. Étape 3 : catégorisation et surlignage — la réponse est surlignée en vert, orange ou rouge selon la fiabilité, avec un score de confiance et la preuve citée. Étape 4 : évaluation statistique — démonstration de l'efficacité de Berlue face à une baseline, sur des jeux de données difficiles.">
+      </figure>
+    </div>
+  </section>
+
+  <section class="img-slide" id="s03">
+    <nav class="pager">
+      <a href="#s02">← Précédent</a>
+      <a href="#s04">Suivant →</a>
+    </nav>
+    <h2 class="section-title"><span class="num">03</span> Le flux, pas à pas</h2>
+    <div class="diagram-wrap">
+      <figure>
+        <img src="images/3.jpeg" alt="Entrée utilisateur et LLM : l'utilisateur pose une question via l'interface web, le LLM (Ollama ou Transformers) génère une réponse potentiellement erronée. Analyse des affirmations et RAG : l'extracteur d'affirmations découpe la réponse, le module RAG interroge l'index FAISS/Chroma construit sur FEVER. Auto-cohérence et vérification : SelfCheckGPT vérifie si le LLM se contredit en régénérant la réponse plusieurs fois. Fusion et résultat final : le score de fusion combine les deux verdicts et l'interface web affiche la réponse annotée, verte/orange/rouge, avec le score de confiance.">
+      </figure>
+    </div>
+  </section>
+
+  <section class="img-slide" id="s04">
+    <nav class="pager">
+      <a href="#s03">← Précédent</a>
+      <a href="#s05">Suivant →</a>
+    </nav>
+    <h2 class="section-title"><span class="num">04</span> Encyclopédie des composants</h2>
+    <div class="diagram-wrap">
+      <figure>
+        <img src="images/4.jpeg" alt="Vue d'ensemble illustrée des composants du système Berlue et de son évaluation : Interface Web, LLM (Ollama/Transformers), Extracteur d'affirmations, RAG (FAISS/Chroma), base FEVER, SelfCheckGPT, Fusion Score, base d'exemples d'évaluation, HaluEval et TruthfulQA, pipeline Berlue complet, classificateur NLI (baseline), et rapport de métriques off-line.">
+      </figure>
+      <figcaption>Récapitulatif de toutes les briques présentées en détail dans les diagrammes suivants.</figcaption>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDES EXPLICATIVES (reprises de berlue-pitch) ===================== -->
+
+  <section class="pitch-block" id="s05">
+    <nav class="pager">
+      <a href="#s04">← Précédent</a>
+      <a href="#s06">Suivant →</a>
+    </nav>
+    <h2 class="section-title"><span class="num">05</span> Le concept</h2>
     <p><b>Le problème :</b> un LLM répond toujours avec la même assurance, qu'il dise vrai ou qu'il invente. <br />
     L'utilisateur n'a aucun moyen simple de savoir quelle partie d'une réponse est fiable.</p>
 
@@ -165,12 +225,12 @@
 
   </section>
 
-  <section id="s02">
+  <section id="s06">
     <nav class="pager">
-      <a href="#s01">← Précédent</a>
-      <a href="#s03">Suivant →</a>
+      <a href="#s05">← Précédent</a>
+      <a href="#s07">Suivant →</a>
     </nav>
-    <h2 class="section-title"><span class="num">02</span> Scénario de démo — diagramme de séquence</h2>
+    <h2 class="section-title"><span class="num">06</span> Scénario de démo — diagramme de séquence</h2>
     <div class="diagram-wrap">
       <figure>
         <svg viewBox="0 0 920 664" role="img" aria-label="Séquence : l'utilisateur pose une question, l'interface obtient une réponse et ses affirmations d'Ollama, vérifie chaque affirmation auprès du module RAG en boucle, lance en parallèle un test d'auto-cohérence SelfCheckGPT qui répète K fois — en boucle, un appel Ollama à la fois — la génération d'un échantillon à température élevée, puis renvoie à l'utilisateur la réponse surlignée avec un score de confiance.">
@@ -264,12 +324,12 @@
 
   </section>
 
-  <section id="s03">
+  <section id="s07">
     <nav class="pager">
-      <a href="#s02">← Précédent</a>
-      <a href="#s04">Suivant →</a>
+      <a href="#s06">← Précédent</a>
+      <a href="#s08">Suivant →</a>
     </nav>
-    <h2 class="section-title"><span class="num">03</span> Composants de la démo — schéma d'architecture</h2>
+    <h2 class="section-title"><span class="num">07</span> Composants de la démo — schéma d'architecture</h2>
     <div class="diagram-wrap">
       <figure>
         <svg viewBox="0 0 930 560" role="img" aria-label="Architecture de la démo : l'utilisateur échange question et résultat avec l'interface web ; à l'intérieur du système Berlue, l'interface passe la question au LLM (Ollama ou transformers), qui la transmet à l'extracteur d'affirmations puis, en parallèle, au module SelfCheckGPT ; l'extracteur interroge le module RAG et son index vectoriel construit sur le corpus FEVER ; RAG et SelfCheckGPT envoient chacun leur verdict à la fusion de score, qui renvoie le résultat à l'interface web. Aucun composant externe au système hormis le corpus FEVER indexé par RAG.">
@@ -348,12 +408,12 @@
 
   </section>
 
-  <section id="s04">
+  <section id="s08">
     <nav class="pager">
-      <a href="#s03">← Précédent</a>
-      <a href="#s05">Suivant →</a>
+      <a href="#s07">← Précédent</a>
+      <a href="#s09">Suivant →</a>
     </nav>
-    <h2 class="section-title"><span class="num">04</span> Preuve de pertinence — séquence de l'évaluation offline</h2>
+    <h2 class="section-title"><span class="num">08</span> Preuve de pertinence — séquence de l'évaluation offline</h2>
     <div class="diagram-wrap">
       <figure>
         <svg viewBox="0 0 1000 560" role="img" aria-label="Séquence d'évaluation offline : un script d'évaluation charge des exemples labellisés depuis HaluEval et TruthfulQA, puis pour chaque exemple interroge à la fois le pipeline Berlue complet et le classifieur NLI léger de référence, compare les deux verdicts au label vérité-terrain, et agrège le tout en un rapport de métriques comparatif utilisé dans les slides de la presentation finale.">
@@ -441,12 +501,12 @@
 
   </section>
 
-  <section id="s05">
+  <section id="s09">
     <nav class="pager">
-      <a href="#s04">← Précédent</a>
-      <span class="spacer"><a href="#s05">Suivant →</a></span>
+      <a href="#s08">← Précédent</a>
+      <span class="spacer"><a href="#s09">Suivant →</a></span>
     </nav>
-    <h2 class="section-title"><span class="num">05</span> Composants de l'évaluation offline — schéma d'architecture</h2>
+    <h2 class="section-title"><span class="num">09</span> Composants de l'évaluation offline — schéma d'architecture</h2>
     <div class="diagram-wrap">
       <figure>
         <svg viewBox="0 0 900 380" role="img" aria-label="Architecture de l'évaluation offline : un script d'évaluation charge des exemples labellisés depuis les jeux de données externes HaluEval et TruthfulQA, interroge le pipeline Berlue (simplifié en boîte noire) et le classifieur NLI léger de référence, puis agrège les deux verdicts en un rapport de métriques.">
@@ -474,7 +534,7 @@
           <!-- Pipeline Berlue simplifié -->
           <rect x="360" y="140" width="200" height="54" rx="0" fill="none" stroke="currentColor"/>
           <text x="460" y="163" font-size="12.5" text-anchor="middle" font-weight="700">Pipeline Berlue</text>
-          <text x="460" y="179" font-size="10.5" text-anchor="middle" class="muted" fill="currentColor" opacity="0.75">détail en §03</text>
+          <text x="460" y="179" font-size="10.5" text-anchor="middle" class="muted" fill="currentColor" opacity="0.75">détail en §07</text>
 
           <!-- Classifieur NLI -->
           <rect x="610" y="140" width="250" height="54" rx="0" fill="none" stroke="currentColor" stroke-dasharray="3 3"/>
