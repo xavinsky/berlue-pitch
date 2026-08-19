@@ -57,7 +57,7 @@
     font-weight: 700; margin: 1.9rem 0 0.7rem;
     display: flex; align-items: baseline; gap: 0.55rem;
   }
-  h2.section-title .num-nav { display: inline-flex; align-items: baseline; gap: 0.3em; }
+  h2.section-title .num-nav { display: inline-flex; align-items: baseline; gap: 0.3em; scroll-margin-top: 1.2rem; }
   h2.section-title .num {
     font-family: var(--font-heading); font-size: 0.6em; font-weight: 700;
     color: var(--etiquette); background: var(--etiquette-soft);
@@ -96,7 +96,7 @@
 
   /* présentation page par page : chaque section = un écran, avec navigation par ancre,
      et un grand blanc entre sections pour qu'on ne voie jamais deux morceaux de page à la fois */
-  section { min-height: 92vh; display: flex; flex-direction: column; scroll-margin-top: 1.2rem; margin-bottom: 8rem; }
+  section { min-height: 92vh; display: flex; flex-direction: column; margin-bottom: 8rem; }
   section.pitch-block { min-height: 78vh; }
   section.img-slide { min-height: 92vh; justify-content: center; }
   section:last-of-type { margin-bottom: 0; }
@@ -126,9 +126,9 @@
 
   <!-- ===================== SLIDES ILLUSTRÉES (pitch2/images) ===================== -->
 
-  <section class="img-slide" id="s01">
+  <section class="img-slide">
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s01">
         <a class="nav-btn is-disabled" href="#s01" aria-label="Précédent">‹</a>
         <span class="num">01</span>
         <a class="nav-btn" href="#s02" aria-label="Suivant">›</a>
@@ -143,9 +143,9 @@
     </div>
   </section>
 
-  <section class="img-slide" id="s02">
+  <section class="img-slide">
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s02">
         <a class="nav-btn" href="#s01" aria-label="Précédent">‹</a>
         <span class="num">02</span>
         <a class="nav-btn" href="#s03" aria-label="Suivant">›</a>
@@ -159,9 +159,9 @@
     </div>
   </section>
 
-  <section class="img-slide" id="s03">
+  <section class="img-slide">
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s03">
         <a class="nav-btn" href="#s02" aria-label="Précédent">‹</a>
         <span class="num">03</span>
         <a class="nav-btn" href="#s04" aria-label="Suivant">›</a>
@@ -175,9 +175,9 @@
     </div>
   </section>
 
-  <section class="img-slide" id="s04">
+  <section class="img-slide">
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s04">
         <a class="nav-btn" href="#s03" aria-label="Précédent">‹</a>
         <span class="num">04</span>
         <a class="nav-btn" href="#s05" aria-label="Suivant">›</a>
@@ -194,9 +194,9 @@
 
   <!-- ===================== SLIDES EXPLICATIVES (reprises de berlue-pitch) ===================== -->
 
-  <section class="pitch-block" id="s05">
+  <section class="pitch-block">
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s05">
         <a class="nav-btn" href="#s04" aria-label="Précédent">‹</a>
         <span class="num">05</span>
         <a class="nav-btn" href="#s06" aria-label="Suivant">›</a>
@@ -234,9 +234,9 @@
 
   </section>
 
-  <section id="s06">
+  <section>
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s06">
         <a class="nav-btn" href="#s05" aria-label="Précédent">‹</a>
         <span class="num">06</span>
         <a class="nav-btn" href="#s07" aria-label="Suivant">›</a>
@@ -336,9 +336,9 @@
 
   </section>
 
-  <section id="s07">
+  <section>
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s07">
         <a class="nav-btn" href="#s06" aria-label="Précédent">‹</a>
         <span class="num">07</span>
         <a class="nav-btn" href="#s08" aria-label="Suivant">›</a>
@@ -423,9 +423,9 @@
 
   </section>
 
-  <section id="s08">
+  <section>
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s08">
         <a class="nav-btn" href="#s07" aria-label="Précédent">‹</a>
         <span class="num">08</span>
         <a class="nav-btn" href="#s09" aria-label="Suivant">›</a>
@@ -519,9 +519,9 @@
 
   </section>
 
-  <section id="s09">
+  <section>
     <h2 class="section-title">
-      <span class="num-nav">
+      <span class="num-nav" id="s09">
         <a class="nav-btn" href="#s08" aria-label="Précédent">‹</a>
         <span class="num">09</span>
         <a class="nav-btn is-disabled" href="#s09" aria-label="Suivant">›</a>
