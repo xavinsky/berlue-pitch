@@ -57,11 +57,23 @@
     font-weight: 700; margin: 1.9rem 0 0.7rem;
     display: flex; align-items: baseline; gap: 0.55rem;
   }
+  h2.section-title .num-nav { display: inline-flex; align-items: baseline; gap: 0.3em; }
   h2.section-title .num {
     font-family: var(--font-heading); font-size: 0.6em; font-weight: 700;
     color: var(--etiquette); background: var(--etiquette-soft);
     border-radius: 0; padding: 0.15em 0.5em;
   }
+  h2.section-title .nav-btn {
+    font-family: var(--font-heading); font-size: 0.6em; font-weight: 700;
+    color: var(--etiquette); background: var(--surface);
+    text-decoration: none; cursor: pointer; line-height: 1;
+    border: 1px solid var(--border); border-radius: 0; padding: 0.15em 0.55em;
+    box-shadow: 0 2px 6px var(--shadow-color);
+    transition: filter .15s ease, transform .15s ease;
+  }
+  h2.section-title .nav-btn:hover { filter: brightness(.92); transform: translateY(-1px); }
+  h2.section-title .nav-btn.is-disabled { visibility: hidden; pointer-events: none; }
+  @media (prefers-reduced-motion: reduce) { h2.section-title .nav-btn { transition: none; } }
 
   p, li { line-height: 1.6; margin: 0 0 0.75rem; font-size: 1rem; }
   .pitch-block ul { margin: 0 0 0.9rem; padding-left: 1.3rem; }
@@ -89,23 +101,6 @@
   section.img-slide { min-height: 92vh; justify-content: center; }
   section:last-of-type { margin-bottom: 0; }
 
-  .pager {
-    padding-top: 1.2rem; margin-bottom: 1.6rem;
-    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
-    border-top: 1px solid var(--border);
-  }
-  .pager a {
-    display: inline-flex; align-items: center; gap: 0.4em;
-    font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem;
-    color: var(--textes); text-decoration: none; cursor: pointer;
-    padding: 0.45em 1em; border: 1px solid var(--border); border-radius: 0;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    transition: filter .15s ease, transform .15s ease;
-  }
-  .pager a:hover { filter: brightness(.92); transform: translateY(-1px); }
-  .pager .spacer { visibility: hidden; }
-  @media (prefers-reduced-motion: reduce) { .pager a { transition: none; } }
-
   .diagram-wrap {
     background: var(--surface); border-radius: 0;
     padding: 1.1rem clamp(0.6rem, 2vw, 1.4rem);
@@ -119,7 +114,7 @@
     .diagram-wrap { box-shadow: none; border: 1px solid var(--border); }
     section { min-height: 0; page-break-before: always; page-break-inside: avoid; }
     section:first-of-type { page-break-before: avoid; }
-    .pager { display: none; }
+    h2.section-title .nav-btn { display: none; }
   }
 </style>
 
@@ -132,11 +127,14 @@
   <!-- ===================== SLIDES ILLUSTRÉES (pitch2/images) ===================== -->
 
   <section class="img-slide" id="s01">
-    <nav class="pager">
-      <span class="spacer"><a href="#s01">← Précédent</a></span>
-      <a href="#s02">Suivant →</a>
-    </nav>
-    <h2 class="section-title"><span class="num">01</span> Berlue en action</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn is-disabled" href="#s01" aria-label="Précédent">‹</a>
+        <span class="num">01</span>
+        <a class="nav-btn" href="#s02" aria-label="Suivant">›</a>
+      </span>
+      Berlue en action
+    </h2>
     <div class="diagram-wrap">
       <figure>
         <img src="images/1.jpeg" alt="Le robot Berlue, en pleine démo, pointe vers deux panneaux holographiques affichant l'affirmation « Le ciel est vert » — l'un marqué d'une croix rouge « Faux ! », l'autre repris tel quel — pendant qu'un utilisateur travaille en arrière-plan sur des écrans de code.">
@@ -146,11 +144,14 @@
   </section>
 
   <section class="img-slide" id="s02">
-    <nav class="pager">
-      <a href="#s01">← Précédent</a>
-      <a href="#s03">Suivant →</a>
-    </nav>
-    <h2 class="section-title"><span class="num">02</span> Le processus Berlue en 4 étapes</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn" href="#s01" aria-label="Précédent">‹</a>
+        <span class="num">02</span>
+        <a class="nav-btn" href="#s03" aria-label="Suivant">›</a>
+      </span>
+      Le processus Berlue en 4 étapes
+    </h2>
     <div class="diagram-wrap">
       <figure>
         <img src="images/2.jpeg" alt="Étape 1 : détection d'assertion — le robot analyse la réponse du LLM pour identifier les affirmations factuelles. Étape 2 : recherche de preuves — Berlue vérifie chaque affirmation via RAG sur le corpus FEVER et teste l'auto-cohérence. Étape 3 : catégorisation et surlignage — la réponse est surlignée en vert, orange ou rouge selon la fiabilité, avec un score de confiance et la preuve citée. Étape 4 : évaluation statistique — démonstration de l'efficacité de Berlue face à une baseline, sur des jeux de données difficiles.">
@@ -159,11 +160,14 @@
   </section>
 
   <section class="img-slide" id="s03">
-    <nav class="pager">
-      <a href="#s02">← Précédent</a>
-      <a href="#s04">Suivant →</a>
-    </nav>
-    <h2 class="section-title"><span class="num">03</span> Le flux, pas à pas</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn" href="#s02" aria-label="Précédent">‹</a>
+        <span class="num">03</span>
+        <a class="nav-btn" href="#s04" aria-label="Suivant">›</a>
+      </span>
+      Le flux, pas à pas
+    </h2>
     <div class="diagram-wrap">
       <figure>
         <img src="images/3.jpeg" alt="Entrée utilisateur et LLM : l'utilisateur pose une question via l'interface web, le LLM (Ollama ou Transformers) génère une réponse potentiellement erronée. Analyse des affirmations et RAG : l'extracteur d'affirmations découpe la réponse, le module RAG interroge l'index FAISS/Chroma construit sur FEVER. Auto-cohérence et vérification : SelfCheckGPT vérifie si le LLM se contredit en régénérant la réponse plusieurs fois. Fusion et résultat final : le score de fusion combine les deux verdicts et l'interface web affiche la réponse annotée, verte/orange/rouge, avec le score de confiance.">
@@ -172,11 +176,14 @@
   </section>
 
   <section class="img-slide" id="s04">
-    <nav class="pager">
-      <a href="#s03">← Précédent</a>
-      <a href="#s05">Suivant →</a>
-    </nav>
-    <h2 class="section-title"><span class="num">04</span> Encyclopédie des composants</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn" href="#s03" aria-label="Précédent">‹</a>
+        <span class="num">04</span>
+        <a class="nav-btn" href="#s05" aria-label="Suivant">›</a>
+      </span>
+      Encyclopédie des composants
+    </h2>
     <div class="diagram-wrap">
       <figure>
         <img src="images/4.jpeg" alt="Vue d'ensemble illustrée des composants du système Berlue et de son évaluation : Interface Web, LLM (Ollama/Transformers), Extracteur d'affirmations, RAG (FAISS/Chroma), base FEVER, SelfCheckGPT, Fusion Score, base d'exemples d'évaluation, HaluEval et TruthfulQA, pipeline Berlue complet, classificateur NLI (baseline), et rapport de métriques off-line.">
@@ -188,11 +195,14 @@
   <!-- ===================== SLIDES EXPLICATIVES (reprises de berlue-pitch) ===================== -->
 
   <section class="pitch-block" id="s05">
-    <nav class="pager">
-      <a href="#s04">← Précédent</a>
-      <a href="#s06">Suivant →</a>
-    </nav>
-    <h2 class="section-title"><span class="num">05</span> Le concept</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn" href="#s04" aria-label="Précédent">‹</a>
+        <span class="num">05</span>
+        <a class="nav-btn" href="#s06" aria-label="Suivant">›</a>
+      </span>
+      Le concept
+    </h2>
     <p><b>Le problème :</b> un LLM répond toujours avec la même assurance, qu'il dise vrai ou qu'il invente. <br />
     L'utilisateur n'a aucun moyen simple de savoir quelle partie d'une réponse est fiable.</p>
 
@@ -225,11 +235,14 @@
   </section>
 
   <section id="s06">
-    <nav class="pager">
-      <a href="#s05">← Précédent</a>
-      <a href="#s07">Suivant →</a>
-    </nav>
-    <h2 class="section-title"><span class="num">06</span> Scénario de démo — diagramme de séquence</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn" href="#s05" aria-label="Précédent">‹</a>
+        <span class="num">06</span>
+        <a class="nav-btn" href="#s07" aria-label="Suivant">›</a>
+      </span>
+      Scénario de démo — diagramme de séquence
+    </h2>
     <div class="diagram-wrap">
       <figure>
         <svg viewBox="0 0 920 664" role="img" aria-label="Séquence : l'utilisateur pose une question, l'interface obtient une réponse et ses affirmations d'Ollama, vérifie chaque affirmation auprès du module RAG en boucle, lance en parallèle un test d'auto-cohérence SelfCheckGPT qui répète K fois — en boucle, un appel Ollama à la fois — la génération d'un échantillon à température élevée, puis renvoie à l'utilisateur la réponse surlignée avec un score de confiance.">
@@ -324,11 +337,14 @@
   </section>
 
   <section id="s07">
-    <nav class="pager">
-      <a href="#s06">← Précédent</a>
-      <a href="#s08">Suivant →</a>
-    </nav>
-    <h2 class="section-title"><span class="num">07</span> Composants de la démo — schéma d'architecture</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn" href="#s06" aria-label="Précédent">‹</a>
+        <span class="num">07</span>
+        <a class="nav-btn" href="#s08" aria-label="Suivant">›</a>
+      </span>
+      Composants de la démo — schéma d'architecture
+    </h2>
     <div class="diagram-wrap">
       <figure>
         <svg viewBox="0 0 930 560" role="img" aria-label="Architecture de la démo : l'utilisateur échange question et résultat avec l'interface web ; à l'intérieur du système Berlue, l'interface passe la question au LLM (Ollama ou transformers), qui la transmet à l'extracteur d'affirmations puis, en parallèle, au module SelfCheckGPT ; l'extracteur interroge le module RAG et son index vectoriel construit sur le corpus FEVER ; RAG et SelfCheckGPT envoient chacun leur verdict à la fusion de score, qui renvoie le résultat à l'interface web. Aucun composant externe au système hormis le corpus FEVER indexé par RAG.">
@@ -408,11 +424,14 @@
   </section>
 
   <section id="s08">
-    <nav class="pager">
-      <a href="#s07">← Précédent</a>
-      <a href="#s09">Suivant →</a>
-    </nav>
-    <h2 class="section-title"><span class="num">08</span> Preuve de pertinence — séquence de l'évaluation offline</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn" href="#s07" aria-label="Précédent">‹</a>
+        <span class="num">08</span>
+        <a class="nav-btn" href="#s09" aria-label="Suivant">›</a>
+      </span>
+      Preuve de pertinence — séquence de l'évaluation offline
+    </h2>
     <div class="diagram-wrap">
       <figure>
         <svg viewBox="0 0 1000 560" role="img" aria-label="Séquence d'évaluation offline : un script d'évaluation charge des exemples labellisés depuis HaluEval et TruthfulQA, puis pour chaque exemple interroge à la fois le pipeline Berlue complet et le classifieur NLI léger de référence, compare les deux verdicts au label vérité-terrain, et agrège le tout en un rapport de métriques comparatif utilisé dans les slides de la presentation finale.">
@@ -501,11 +520,14 @@
   </section>
 
   <section id="s09">
-    <nav class="pager">
-      <a href="#s08">← Précédent</a>
-      <span class="spacer"><a href="#s09">Suivant →</a></span>
-    </nav>
-    <h2 class="section-title"><span class="num">09</span> Composants de l'évaluation offline — schéma d'architecture</h2>
+    <h2 class="section-title">
+      <span class="num-nav">
+        <a class="nav-btn" href="#s08" aria-label="Précédent">‹</a>
+        <span class="num">09</span>
+        <a class="nav-btn is-disabled" href="#s09" aria-label="Suivant">›</a>
+      </span>
+      Composants de l'évaluation offline — schéma d'architecture
+    </h2>
     <div class="diagram-wrap">
       <figure>
         <svg viewBox="0 0 900 380" role="img" aria-label="Architecture de l'évaluation offline : un script d'évaluation charge des exemples labellisés depuis les jeux de données externes HaluEval et TruthfulQA, interroge le pipeline Berlue (simplifié en boîte noire) et le classifieur NLI léger de référence, puis agrège les deux verdicts en un rapport de métriques.">
