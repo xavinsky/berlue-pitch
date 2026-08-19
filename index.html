@@ -99,7 +99,8 @@
   section { min-height: 92vh; display: flex; flex-direction: column; margin-bottom: 8rem; }
   section.pitch-block { min-height: 78vh; }
   section.img-slide { min-height: 92vh; justify-content: center; }
-  section:last-of-type { margin-bottom: 0; }
+  /* pas de margin-bottom:0 sur la dernière section : son ancre (sur le [0x]) a besoin
+     d'assez d'espace en dessous pour pouvoir remonter en haut du viewport au clic */
 
   .diagram-wrap {
     background: var(--surface); border-radius: 0;
@@ -112,7 +113,7 @@
     @page { size: A4 landscape; margin: 10mm; }
     body, .surface { background: #FFFFFF; }
     .diagram-wrap { box-shadow: none; border: 1px solid var(--border); }
-    section { min-height: 0; page-break-before: always; page-break-inside: avoid; }
+    section { min-height: 0; margin-bottom: 0; page-break-before: always; page-break-inside: avoid; }
     section:first-of-type { page-break-before: avoid; }
     h2.section-title .nav-btn { display: none; }
   }
